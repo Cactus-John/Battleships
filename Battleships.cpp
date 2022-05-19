@@ -387,6 +387,7 @@ int main()
 		// Upsiuje koordinate carriera (1)
 		int x;
 		char y;
+		string north, south, west, east;
 		for (int i = 0; i < 5; i++)
 		{
 
