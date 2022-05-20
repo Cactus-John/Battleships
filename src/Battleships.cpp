@@ -387,27 +387,29 @@ int main()
 		// Upsiuje koordinate carriera (1)
 		int x;
 		char y;
-		string north, south, west, east;
+		
 		for (int i = 0; i < 5; i++)
 		{
 
 			cout << endl;
-			cout << "Player 1: place a carrier (occupies 5 spaces): " << endl;
-			cin >> y >> x;
-			
-			switch (y)
+			cout << "Player 1: Where would you like to have your boat faced: " << endl;
+			cout << " " << "1.North\n" << " "<< "2.South\n"<< " "<< "3.West\n"<< " "<< "4.East"<< endl;
+			string answer;
+			cin >> answer;
+
+			if (answer == "North" || answer == "north" || answer == "N")
 			{
-				case('A'):y = 1; break;
-				case('B'):y = 2; break;
-				case('C'):y = 3; break;
-				case('D'):y = 4; break;
-				case('E'):y = 5; break;
-				case('F'):y = 6; break;
-				case('G'):y = 7; break;
-				case('H'):y = 8; break;
-				case('I'):y = 9; break;
-				case('J'):y = 10; break;
+				cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
+				cin >> y >> x;
+
+				for (int i = 0; i < 5; i++)
+				{
+					player_ocean[y][x] = x++;
+					cout << player_ocean;
+				}
 			}
+
+			
 			player_ocean[x][y] = '#';
 			system("CLS");
 			for (int i = 0; i < 11; i++)
