@@ -387,46 +387,47 @@ int main()
 		// Upsiuje koordinate carriera (1)
 		int x;
 		char y;
-		
-		for (int i = 0; i < 5; i++)
+		cout << endl;
+		cout << "Player 1: Where would you like to have your boat faced: " << endl;
+		cout << " " << "1.North\n" << " " << "2.South\n" << " " << "3.West\n" << " " << "4.East" << endl;
+		string answer;
+		cin >> answer;
+
+		if (answer == "North" || answer == "north" || answer == "N")
 		{
+			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
+			cin >> y >> x;
 
-			cout << endl;
-			cout << "Player 1: Where would you like to have your boat faced: " << endl;
-			cout << " " << "1.North\n" << " "<< "2.South\n"<< " "<< "3.West\n"<< " "<< "4.East"<< endl;
-			string answer;
-			cin >> answer;
-
-			if (answer == "North" || answer == "north" || answer == "N")
+			switch (y)
 			{
-				cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-				cin >> y >> x;
-
-				for (int i = 0; i < 5; i++)
-				{
-					player_ocean[y][x] = x++;
-					cout << player_ocean;
-				}
+				case('A'):y = 1; break;
+				case('B'):y = 2; break;
+				case('C'):y = 3; break;
+				case('D'):y = 4; break;
+				case('E'):y = 5; break;
+				case('F'):y = 6; break;
+				case('G'):y = 7; break;
+				case('H'):y = 8; break;
+				case('I'):y = 9; break;
+				case('J'):y = 10; break;
 			}
-
-			
-			player_ocean[x][y] = '#';
-			system("CLS");
-			for (int i = 0; i < 11; i++)
+			for (int i = 0; i < 5; i++)
 			{
-				if (i != 10)
-					cout << " " << i << " ";
-				else
-					cout << i << " ";
-				for (int j = 1; j < 11; j++)
+				player_ocean[x][y] = '#';
+				system("CLS");
+				for (int i = 0; i < 11; i++)
 				{
-					cout << player_ocean[i][j] << " ";
+					if (i != 10)
+						cout << " " << i << " ";
+					else
+						cout << i << " ";
+					for (int j = 1; j < 11; j++)
+						cout << player_ocean[i][j] << " ";
+
+					cout << endl;
 				}
-				cout << endl;
 			}
 		}
-		
-
 		for (int i = 0; i < 4; i++)
 		{
 
