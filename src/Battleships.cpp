@@ -393,11 +393,11 @@ int main()
 		string answer;
 		cin >> answer;
 
-		if (answer == "North" || answer == "north" || answer == "N")
+		if (answer == "North" || answer == "north" || answer == "N" || answer == "n")
 		{
+			
 			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-
+			cin >> y >> x;	
 			switch (y)
 			{
 				case('A'):y = 1; break;
@@ -411,9 +411,13 @@ int main()
 				case('I'):y = 9; break;
 				case('J'):y = 10; break;
 			}
+			
+
 			for (int i = 0; i < 5; i++)
 			{
+					
 				player_ocean[x][y] = '#';
+				//int boat_pos = player_ocean[x][y];
 				system("CLS");
 				for (int i = 0; i < 11; i++)
 				{
@@ -423,11 +427,12 @@ int main()
 						cout << i << " ";
 					for (int j = 1; j < 11; j++)
 						cout << player_ocean[i][j] << " ";
-
 					cout << endl;
 				}
-			}
+				--x;
+			}			
 		}
+
 		for (int i = 0; i < 4; i++)
 		{
 
