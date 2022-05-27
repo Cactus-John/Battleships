@@ -1,11 +1,45 @@
 ﻿
 #include <iostream>
 #include <ctime>
+#include <cstdlib>
 using namespace std;
+
+int pretvorba(char y)
+{
+	switch(y)
+	{
+		case('A'):y = 1; break;
+		case('B'):y = 2; break;
+		case('C'):y = 3; break;
+		case('D'):y = 4; break;
+		case('E'):y = 5; break;
+		case('F'):y = 6; break;
+		case('G'):y = 7; break;
+		case('H'):y = 8; break;
+		case('I'):y = 9; break;
+		case('J'):y = 10; break;
+	}
+	return y;
+}
+
+void ispis(char player_ocean[][11])
+{
+	
+	for (int i = 0; i < 11; i++)
+	{
+		if (i != 10)
+			cout << " " << i << " ";
+		else
+			cout << i << " ";
+		for (int j = 1; j < 11; j++)
+			cout << player_ocean[i][j] << " ";
+		cout << endl;
+	}
+}
 
 int main()
 {
-	time(NULL);
+	srand(time(nullptr));
 	char ocean[11][11];
 	char znak = 'A';
 
@@ -349,21 +383,10 @@ int main()
 		}
 	}
 
-
+	
 	cout << " Enemy teritory\n";
 	//Ispisuje igraču ploču protivnika
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << player_ocean[i][j] << " ";
-		}
-		cout << endl;
-	}
+	ispis(player_ocean);
 	cout << endl << endl;
 
 
@@ -387,6 +410,7 @@ int main()
 		// Upsiuje koordinate carriera (1)
 		int x;
 		char y;
+
 		cout << endl;
 		cout << "Player 1: Where would you like to have your boat faced: " << endl;
 		cout << " " << "1.North\n" << " " << "2.South\n" << " " << "3.West\n" << " " << "4.East" << endl;
@@ -398,20 +422,7 @@ int main()
 			
 			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
 			cin >> y >> x;	
-			switch (y)
-			{
-				case('A'):y = 1; break;
-				case('B'):y = 2; break;
-				case('C'):y = 3; break;
-				case('D'):y = 4; break;
-				case('E'):y = 5; break;
-				case('F'):y = 6; break;
-				case('G'):y = 7; break;
-				case('H'):y = 8; break;
-				case('I'):y = 9; break;
-				case('J'):y = 10; break;
-			}
-			
+			pretvorba(y);
 
 			for (int i = 0; i < 5; i++)
 			{
@@ -419,16 +430,7 @@ int main()
 				player_ocean[x][y] = '#';
 				//int boat_pos = player_ocean[x][y];
 				system("CLS");
-				for (int i = 0; i < 11; i++)
-				{
-					if (i != 10)
-						cout << " " << i << " ";
-					else
-						cout << i << " ";
-					for (int j = 1; j < 11; j++)
-						cout << player_ocean[i][j] << " ";
-					cout << endl;
-				}
+				ispis(player_ocean);
 				--x;
 			}			
 		}
@@ -439,34 +441,11 @@ int main()
 			cout << endl;
 			cout << "Player 1: place a battleship (occupies 4 places): " << endl;
 			cin >> y >> x;
+			pretvorba(y);
 
-			switch (y)
-			{
-				case('A'):y = 1; break;
-				case('B'):y = 2; break;
-				case('C'):y = 3; break;
-				case('D'):y = 4; break;
-				case('E'):y = 5; break;
-				case('F'):y = 6; break;
-				case('G'):y = 7; break;
-				case('H'):y = 8; break;
-				case('I'):y = 9; break;
-				case('J'):y = 10; break;
-			}
 			player_ocean[x][y] = '#';
 			system("CLS");
-			for (int i = 0; i < 11; i++)
-			{
-				if (i != 10)
-					cout << " " << i << " ";
-				else
-					cout << " " << i << " ";
-				for (int j = 1; j < 11; j++)
-				{
-					cout << player_ocean[i][j] << " ";
-				}
-				cout << '\n';
-			}
+			ispis(player_ocean);
 		}
 		
 		for (int i = 0; i < 3; i++)
@@ -508,65 +487,19 @@ int main()
 		for (int i = 0; i < 3; i++)
 		{
 			cin >> y >> x;
-			switch (y)
-			{
-			case('A'):y = 1; break;
-			case('B'):y = 2; break;
-			case('C'):y = 3; break;
-			case('D'):y = 4; break;
-			case('E'):y = 5; break;
-			case('F'):y = 6; break;
-			case('G'):y = 7; break;
-			case('H'):y = 8; break;
-			case('I'):y = 9; break;
-			case('J'):y = 10; break;
-			}
+			pretvorba(y);
 			player_ocean[x][y] = '#';
 			system("CLS");
-			for (int i = 0; i < 11; i++)
-			{
-				if (i != 10)
-					cout << " " << i << " ";
-				else
-					cout << i << " ";
-				for (int j = 1; j < 11; j++)
-				{
-					cout << player_ocean[i][j] << " ";
-				}
-				cout << '\n';
-			}
+			ispis(player_ocean);
 		}
 		cout << "Place a Destroyer ship (occupies 2 spaces): " << endl;
 		for (int i = 0; i < 2; i++)
 		{
 			cin >> y >> x;
-			switch (y)
-			{
-			case('A'):y = 1; break;
-			case('B'):y = 2; break;
-			case('C'):y = 3; break;
-			case('D'):y = 4; break;
-			case('E'):y = 5; break;
-			case('F'):y = 6; break;
-			case('G'):y = 7; break;
-			case('H'):y = 8; break;
-			case('I'):y = 9; break;
-			case('J'):y = 10; break;
-			}
+			pretvorba(y);
 			player_ocean[x][y] = '#';
 			system("CLS");
-			for (int i = 0; i < 11; i++)
-			{
-				if (i != 10)
-					cout << " " << i << " ";
-				else
-					cout << i << " ";
-				for (int j = 1; j < 11; j++)
-				{
-					cout << player_ocean[i][j] << " ";
-				}
-				cout << endl;
-			}
+			ispis(player_ocean);
 		}
 
 		int hits_by_player = 0, hits_by_AI = 0, turns = 1;
@@ -629,19 +562,7 @@ int main()
 				{
 					cout << "Enter cordinates where you want to shoot: " << endl;
 					cin >> y >> x;
-					switch (y)
-					{
-					case('A'):y = 1; break;
-					case('B'):y = 2; break;
-					case('C'):y = 3; break;
-					case('D'):y = 4; break;
-					case('E'):y = 5; break;
-					case('F'):y = 6; break;
-					case('G'):y = 7; break;
-					case('H'):y = 8; break;
-					case('I'):y = 9; break;
-					case('J'):y = 10; break;
-					}
+					pretvorba(y);
 
 					if (ocean[x][y] == '#')
 					{
@@ -741,19 +662,8 @@ int main()
 				{
 					cout << "\nEnter cordinates where you want to shoot:\n";
 					cin >> y >> x;
-					switch (y)
-					{
-					case('A'):y = 1; break;
-					case('B'):y = 2; break;
-					case('C'):y = 3; break;
-					case('D'):y = 4; break;
-					case('E'):y = 5; break;
-					case('F'):y = 6; break;
-					case('G'):y = 7; break;
-					case('H'):y = 8; break;
-					case('I'):y = 9; break;
-					case('J'):y = 10; break;
-					}
+					pretvorba(y);
+
 					if (ocean[x][y] == '#')
 					{
 						ocean_PLAYER_2[x][y] = 'X';
@@ -790,7 +700,7 @@ int main()
 						{
 							cout << player_ocean[i][j] << '\t';
 						}
-						cout << '\n' << '\n';
+						cout << "endl" << "endl";
 					}
 					// turns++;
 				}
@@ -823,7 +733,7 @@ int main()
 						{
 							cout << ocean_PLAYER_2[i][j];
 						}
-						cout << '\n' << '\n';
+						cout << "endl" << "endl";
 					}
 					//Ispisuje polje igrača 1 (player)
 					for (int i = 0; i < 11; i++)
@@ -836,7 +746,7 @@ int main()
 						{
 							cout << player_ocean[i][j] << '\t';
 						}
-						cout << '\n' << '\n';
+						cout << "endl" << "endl";
 					}
 				}
 
@@ -844,7 +754,6 @@ int main()
 			}
 
 		}
-	
 	
 	return 0;
 }
