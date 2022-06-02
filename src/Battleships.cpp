@@ -1,6 +1,7 @@
 ﻿
 #include <iostream>
 #include <ctime>
+#include <fstream>
 #include <cstdlib>
 using namespace std;
 
@@ -39,7 +40,23 @@ void ispis(char player_ocean[][11])
 
 int main()
 {
+
 	srand(time(nullptr));
+	bool load_GAME = false;
+	char player_ocean[11][11];
+	char ocean_PLAYER_2[11][11];
+	cout << "0. New game\n1. Load game\n";
+	cin >> load_GAME;
+	if(load_GAME)
+	{
+		fstream datoteka("battleships.bin", ios::binary | ios::in);
+		datoteka.read((char*) &player_ocean, sizeof (player_ocean));
+		datoteka.read((char*) &ocean_PLAYER_2, sizeof (ocean_PLAYER_2));
+		datoteka.close();
+		//goto game;//dodaj; il nemoj ili funkcija i doajd save...
+	}
+
+
 	char ocean[11][11];
 	char znak = 'A';
 
@@ -59,7 +76,7 @@ int main()
 		}
 	}
 
-	char player_ocean[11][11];
+	
 	znak = 'A';
 	for (int i = 0; i < 11; i++)
 	{
@@ -73,7 +90,7 @@ int main()
 		for (int j = 0; j < 11; j++)
 			ocean_PLAYER_1[i][j] = player_ocean[i][j];
 	}
-	char ocean_PLAYER_2[11][11];
+	
 	znak = 'A';
 	for (int i = 0; i < 11; i++)
 	{
@@ -413,27 +430,28 @@ int main()
 
 		cout << endl;
 		cout << "Player 1: Where would you like to have your boat faced: " << endl;
-		cout << " " << "1.North\n" << " " << "2.South\n" << " " << "3.West\n" << " " << "4.East" << endl;
+		cout << " " << "1.V (vertically)\n" << " " << "2.H (horizontally)\n";
 		string answer;
 		cin >> answer;
 
-		if (answer == "North" || answer == "north" || answer == "N" || answer == "n")
+		if (answer == "V" || answer == "v" || answer == "vertically" || answer == "Vertically")
 		{
-			
+
 			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;	
-			pretvorba(y);
+			cin >> y >> x;
+			y = pretvorba(y);
 
 			for (int i = 0; i < 5; i++)
 			{
-					
+
 				player_ocean[x][y] = '#';
 				//int boat_pos = player_ocean[x][y];
 				system("CLS");
 				ispis(player_ocean);
 				--x;
-			}			
+			}
 		}
+
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -454,20 +472,8 @@ int main()
 			cout << endl;
 			cout << "PLAYER 1: place a Submarine ship (occupies 3 spaces): " << endl;
 			cin >> y >> x;
-
-			switch (y)
-			{
-				case('A'):y = 1; break;
-				case('B'):y = 2; break;
-				case('C'):y = 3; break;
-				case('D'):y = 4; break;
-				case('E'):y = 5; break;
-				case('F'):y = 6; break;
-				case('G'):y = 7; break;
-				case('H'):y = 8; break;
-				case('I'):y = 9; break;
-				case('J'):y = 10; break;
-			}
+			
+			y = pretvorba(y);
 			player_ocean[x][y] = '#';
 			system("CLS");
 			for (int i = 0; i < 11; i++)
@@ -487,7 +493,7 @@ int main()
 		for (int i = 0; i < 3; i++)
 		{
 			cin >> y >> x;
-			pretvorba(y);
+			y = pretvorba(y);
 			player_ocean[x][y] = '#';
 			system("CLS");
 			ispis(player_ocean);
@@ -496,7 +502,7 @@ int main()
 		for (int i = 0; i < 2; i++)
 		{
 			cin >> y >> x;
-			pretvorba(y);
+			y = pretvorba(y);
 			player_ocean[x][y] = '#';
 			system("CLS");
 			ispis(player_ocean);
@@ -552,6 +558,7 @@ int main()
 		}
 
 		turns = -1;
+
 		if (diff == 1)
 		{
 			while (hits_by_player < 17 || hits_by_AI < 17)
