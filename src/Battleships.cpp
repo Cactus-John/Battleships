@@ -38,6 +38,38 @@ void ispis(char player_ocean[][11])
 	}
 }
 
+void game_board(char player_ocean[][11])
+{
+	for (int i = 0; i < 11; i++)
+	{
+		if (i != 10)
+			cout << " " << i << " ";
+		else
+			cout << i << " ";
+		for (int j = 1; j < 11; j++)
+		{
+			cout << player_ocean[i][j] << '\t';
+		}
+		cout << endl << endl;
+	}
+}
+
+void game_board2(char ocean_PLAYER_2[][11])
+{
+	for (int i = 0; i < 11; i++)
+	{
+		if (i != 10)
+			cout << " " << i << " ";
+		else
+			cout << i << " ";
+		for (int j = 1; j < 11; j++)
+		{
+			cout << ocean_PLAYER_2[i][j] << '\t';
+		}
+		cout << endl << endl;
+	}
+}
+
 int main()
 {
 
@@ -677,38 +709,15 @@ int main()
 					}
 					system("CLS");
 					// Ispisuje polje igraća 2 (AI-player 2)
-					for (int i = 0; i < 10; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << ocean_PLAYER_2[i][j] << " ";
-						}
-						cout << endl << endl;
-					}
+					game_board2(ocean_PLAYER_2);
 					//Ispisuje polje igrača 1 (player)
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << player_ocean[i][j] << " ";
-						}
-						cout << endl << endl;
-					}
+					game_board(player_ocean);
 					
 				}
 				if (hits_by_player == 17)
 				{
 					cout << "You won" << endl;
-					system("pause");
-					system("CLS");
+					exit(0);
 				}
 
 				// AI turn
@@ -729,46 +738,21 @@ int main()
 					system("CLS");
 
 					// Ispisuje polje igraća 2 (AI-player 2)
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << ocean_PLAYER_2[i][j] << '\t';
-						}
-						cout << '\n' << '\n';
-					}
+					game_board2(ocean_PLAYER_2);
 					//Ispisuje polje igrača 1 (player)
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << player_ocean[i][j] << '\t';
-						}
-						cout << '\n' << '\n';
-					}
+					game_board(player_ocean);
 
 				}
 				if (hits_by_AI == 17)
 				{
 					cout << "You lost" << endl;
-					system("pause");
-					system("CLS");
+					exit(0);
 				}
 			}
-			
-
 		}
+
 		system("CLS");
 		// pro bot
-
 		if (diff == 2)
 		{
 			turns = 0;
@@ -793,37 +777,15 @@ int main()
 					// Ispisuje polje igraća 2 (AI-player 2)
 					system("CLS");
 
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << ocean_PLAYER_2[i][j] << '\t';
-						}
-						cout << endl << endl;
-					}
+					game_board2(ocean_PLAYER_2);
 					//Ispisuje polje igrača 1 (player)
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << player_ocean[i][j] << '\t';
-						}
-						cout << endl << endl;
-					}
+					game_board(player_ocean);
 					// turns++;
 				}
 				if (hits_by_player == 17)
 				{
 					cout << "You won" << endl;
-					system("pause");
+					exit(0);
 				}
 				//AI turn    
 				if (turns % 2 == 0)
@@ -844,44 +806,20 @@ int main()
 					// Ispisuje polje igraća 2 (AI-player 2)
 					system("CLS");
 
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << ocean_PLAYER_2[i][j] << '\t';
-						}
-						cout << endl << endl;
-					}
+					game_board2(ocean_PLAYER_2);
 					//Ispisuje polje igrača 1 (player)
-					for (int i = 0; i < 11; i++)
-					{
-						if (i != 10)
-							cout << " " << i << " ";
-						else
-							cout << i << " ";
-						for (int j = 1; j < 11; j++)
-						{
-							cout << player_ocean[i][j] << '\t';
-						}
-						cout << endl << endl;
-					}
+					game_board(player_ocean);
 				}
 				if (hits_by_AI == 17)
 				{
 					cout << "You lost" << endl;
-					system("pause");
-					system("CLS");
+					exit(0);
 				}
 
 				turns++;
 			}
 			
-
 		}
-	
+
 	return 0;
 }
