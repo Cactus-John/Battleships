@@ -56,7 +56,6 @@ int main()
 		//goto game;//dodaj; il nemoj ili funkcija i doajd save...
 	}
 
-
 	char ocean[11][11];
 	char znak = 'A';
 
@@ -656,7 +655,7 @@ int main()
 
 		if (diff == 1)
 		{
-			while (hits_by_player < 17 || hits_by_AI < 17)
+			while (hits_by_player < 18 || hits_by_AI < 18)
 			{
 				turns = turns + 1;
 				// player turn
@@ -703,6 +702,13 @@ int main()
 						}
 						cout << endl << endl;
 					}
+					
+				}
+				if (hits_by_player == 17)
+				{
+					cout << "You won" << endl;
+					system("pause");
+					system("CLS");
 				}
 
 				// AI turn
@@ -739,7 +745,7 @@ int main()
 					for (int i = 0; i < 11; i++)
 					{
 						if (i != 10)
-							cout << i << " ";
+							cout << " " << i << " ";
 						else
 							cout << i << " ";
 						for (int j = 1; j < 11; j++)
@@ -750,7 +756,15 @@ int main()
 					}
 
 				}
+				if (hits_by_AI == 17)
+				{
+					cout << "You lost" << endl;
+					system("pause");
+					system("CLS");
+				}
 			}
+			
+
 		}
 		system("CLS");
 		// pro bot
@@ -758,7 +772,7 @@ int main()
 		if (diff == 2)
 		{
 			turns = 0;
-			while (hits_by_player < 17 || hits_by_AI < 17)
+			while (hits_by_player < 18 || hits_by_AI < 18)
 			{
 				if (turns % 2 == 1)
 				{
@@ -784,12 +798,12 @@ int main()
 						if (i != 10)
 							cout << " " << i << " ";
 						else
-							cout << " " << i << " ";
+							cout << i << " ";
 						for (int j = 1; j < 11; j++)
 						{
 							cout << ocean_PLAYER_2[i][j] << '\t';
 						}
-						cout << '\n' << '\n';
+						cout << endl << endl;
 					}
 					//Ispisuje polje igrača 1 (player)
 					for (int i = 0; i < 11; i++)
@@ -802,9 +816,14 @@ int main()
 						{
 							cout << player_ocean[i][j] << '\t';
 						}
-						cout << "endl" << "endl";
+						cout << endl << endl;
 					}
 					// turns++;
+				}
+				if (hits_by_player == 17)
+				{
+					cout << "You won" << endl;
+					system("pause");
 				}
 				//AI turn    
 				if (turns % 2 == 0)
@@ -828,32 +847,39 @@ int main()
 					for (int i = 0; i < 11; i++)
 					{
 						if (i != 10)
-							cout << i;
+							cout << " " << i << " ";
 						else
-							cout << i;
+							cout << i << " ";
 						for (int j = 1; j < 11; j++)
 						{
-							cout << ocean_PLAYER_2[i][j];
+							cout << ocean_PLAYER_2[i][j] << '\t';
 						}
-						cout << "endl" << "endl";
+						cout << endl << endl;
 					}
 					//Ispisuje polje igrača 1 (player)
 					for (int i = 0; i < 11; i++)
 					{
 						if (i != 10)
-							cout << i;
+							cout << " " << i << " ";
 						else
-							cout << i;
+							cout << i << " ";
 						for (int j = 1; j < 11; j++)
 						{
 							cout << player_ocean[i][j] << '\t';
 						}
-						cout << "endl" << "endl";
+						cout << endl << endl;
 					}
+				}
+				if (hits_by_AI == 17)
+				{
+					cout << "You lost" << endl;
+					system("pause");
+					system("CLS");
 				}
 
 				turns++;
 			}
+			
 
 		}
 	
