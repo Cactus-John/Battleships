@@ -2,8 +2,15 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <cstdio>
 #include <cstdlib>
 using namespace std;
+
+/*class openWindow
+{
+public:
+	openWindow(GetConsoleWindow());
+};*/
 
 int pretvorba(char y)
 {
@@ -69,38 +76,57 @@ void game_board2(char ocean_PLAYER_2[][11])
 		cout << endl << endl;
 	}
 }
-void postavi_brod(int answer, char (&player_ocean)[11][11], int n)
+
+void unos(int& x, int& inty, char y, bool zastavica)
 {
-	system("cls");
-	int x,inty;
-	char y;
-	cout << "Unesite kordinatu:";
-	cin >> y >> x;
 	inty = pretvorba(y);
-	goto krivi_unos;
-krivi_unos:
-	while (x < 0 || x > 10 || y == 0)
+	while (x < 0 || x > 10 || inty == 0 || zastavica == true)
 	{
 		cout << "Krivi unos\n";
 		system("pause");
 		cout << "Unesite kordinatu:";
 		cin >> y >> x;
 		inty = pretvorba(y);
+		zastavica = false;
 	}
+}
+
+void postavi_brod(int answer, char(&player_ocean)[11][11], int n)
+{
+	system("cls");
+	int x, inty;
+	char y;
+	bool zastavica = false;
+	cout << "Unesite kordinatu:";
+	cin >> y >> x;
+	inty = pretvorba(y);
+	unos(x, inty, y, zastavica);
 	if (answer == 1) // okomito
 	{
 		for (int i = x; i < n + x && i < 11; i++)
-			if (player_ocean[i][y] == '#')
-				goto krivi_unos;
+		{
+			zastavica = false;
+			if (player_ocean[i][inty] == '#')
+			{
+				//exit(0);
+				zastavica = true;
+				unos(x, inty, y, zastavica);
+				continue;
+			}
+		}
+
 		for (int i = x; i < n + x && i < 11; i++)
 			player_ocean[i][inty] = '#';
 	}
 
 	if (answer == 0) // vodoravno
 	{
-		for (int i = y; i < n + y && i < 11; i++)
+		for (int i = inty; i < n + y && i < 11; i--)
 			if (player_ocean[x][i] == '#')
-				goto krivi_unos;
+			{
+				unos(x, inty, y, zastavica);
+				continue;
+			}
 		for (int i = x; i < n + x && i < 11; i++)
 			player_ocean[x][i] = '#';
 	}
@@ -119,10 +145,12 @@ int main()
 	cin >> load_GAME;
 	if(load_GAME)
 	{
-		fstream datoteka("battleships.bin", ios::binary | ios::in);
+		ifstream datoteka("battleships.bin", ifstream::in);
 		datoteka.read((char*) &player_ocean, sizeof (player_ocean));
 		datoteka.read((char*) &ocean_PLAYER_2, sizeof (ocean_PLAYER_2));
 		datoteka.close();
+		game_board(player_ocean);
+		game_board2(ocean_PLAYER_2);
 		//goto game;//dodaj; il nemoj ili funkcija i doajd save...
 	}
 
@@ -145,7 +173,6 @@ int main()
 		}
 	}
 
-	
 	znak = 'A';
 	for (int i = 0; i < 11; i++)
 	{
@@ -506,13 +533,10 @@ int main()
 				i -= 1;
 			}
 			postavi_brod(ans, player_ocean, i);
-
 		}
 		system("cls");
 		game_board(player_ocean);
-		return 0;
 		cout << endl;
-	
 
 		int hits_by_player = 0, hits_by_AI = 0, turns = 1;
 
@@ -564,70 +588,84 @@ int main()
 		}
 
 		turns = -1;
-
+		string unos;
 		if (diff == 1)
 		{
 			while (hits_by_player < 18 || hits_by_AI < 18)
 			{
-				turns = turns + 1;
-				// player turn
-				if (turns % 2 == 0)
+				cout << "Would you like to save the game: " << endl;
+				cout << "Yes or No" << endl;
+				cin >> unos;
+				if (unos == "yes" || unos == "Yes")
 				{
-					cout << "Enter cordinates where you want to shoot: " << endl;
-					cin >> y >> x;
-					y = pretvorba(y);
-
-					if (ocean[x][y] == '#')
-					{
-						hits_by_player++;
-						ocean_PLAYER_2[x][y] = 'X';
-						ocean[x][y] = 'X';
-					}
-					else
-					{
-						ocean_PLAYER_2[x][y] = 'O';
-					}
-					system("CLS");
-					// Ispisuje polje igraća 2 (AI-player 2)
-					game_board2(ocean_PLAYER_2);
-					//Ispisuje polje igrača 1 (player)
-					game_board(player_ocean);
-					
+					ofstream datoteka("battleships.bin", ofstream::out);
+					datoteka.write((char*)&player_ocean, sizeof(player_ocean));
+					datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+					datoteka.close();
 				}
-				if (hits_by_player == 17)
+				else 
 				{
-					cout << "You won" << endl;
-					exit(0);
-				}
-
-				// AI turn
-				if (turns % 2 == 1)
-				{
-					r = rand() % 10 + 1;
-					p = rand() % 10 + 1;
-					if (player_ocean[r][p] == '#')
+					turns = turns + 1;
+					// player turn
+					if (turns % 2 == 0)
 					{
-						hits_by_AI++;
-						player_ocean[r][p] = 'X';
+						cout << "Enter cordinates where you want to shoot: " << endl;
+						cin >> y >> x;
+						y = pretvorba(y);
+
+						if (ocean[x][y] == '#')
+						{
+							hits_by_player++;
+							ocean_PLAYER_2[x][y] = 'X';
+							ocean[x][y] = 'X';
+						}
+						else
+						{
+							ocean_PLAYER_2[x][y] = 'O';
+						}
+						system("CLS");
+						// Ispisuje polje igraća 2 (AI-player 2)
+						game_board2(ocean_PLAYER_2);
+						//Ispisuje polje igrača 1 (player)
+						game_board(player_ocean);
+
+					}
+					if (hits_by_player == 17)
+					{
+						cout << "You won" << endl;
+						exit(0);
 					}
 
-					else
+					// AI turn
+					if (turns % 2 == 1)
 					{
-						player_ocean[r][p] = 'O';
+						r = rand() % 10 + 1;
+						p = rand() % 10 + 1;
+						if (player_ocean[r][p] == '#')
+						{
+							hits_by_AI++;
+							player_ocean[r][p] = 'X';
+						}
+
+						else
+						{
+							player_ocean[r][p] = 'O';
+						}
+						system("CLS");
+
+						// Ispisuje polje igraća 2 (AI-player 2)
+						game_board2(ocean_PLAYER_2);
+						//Ispisuje polje igrača 1 (player)
+						game_board(player_ocean);
+
 					}
-					system("CLS");
-
-					// Ispisuje polje igraća 2 (AI-player 2)
-					game_board2(ocean_PLAYER_2);
-					//Ispisuje polje igrača 1 (player)
-					game_board(player_ocean);
-
+					if (hits_by_AI == 17)
+					{
+						cout << "You lost" << endl;
+						exit(0);
+					}
 				}
-				if (hits_by_AI == 17)
-				{
-					cout << "You lost" << endl;
-					exit(0);
-				}
+				
 			}
 		}
 
