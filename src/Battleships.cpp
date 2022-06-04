@@ -69,6 +69,44 @@ void game_board2(char ocean_PLAYER_2[][11])
 		cout << endl << endl;
 	}
 }
+void postavi_brod(int answer, char (&player_ocean)[11][11], int n)
+{
+	system("cls");
+	int x,inty;
+	char y;
+	cout << "Unesite kordinatu:";
+	cin >> y >> x;
+	inty = pretvorba(y);
+	goto krivi_unos;
+krivi_unos:
+	while (x < 0 || x > 10 || y == 0)
+	{
+		cout << "Krivi unos\n";
+		system("pause");
+		cout << "Unesite kordinatu:";
+		cin >> y >> x;
+		inty = pretvorba(y);
+	}
+	if (answer == 1) // okomito
+	{
+		for (int i = x; i < n + x && i < 11; i++)
+			if (player_ocean[i][y] == '#')
+				goto krivi_unos;
+		for (int i = x; i < n + x && i < 11; i++)
+			player_ocean[i][inty] = '#';
+	}
+
+	if (answer == 0) // vodoravno
+	{
+		for (int i = y; i < n + y && i < 11; i++)
+			if (player_ocean[x][i] == '#')
+				goto krivi_unos;
+		for (int i = x; i < n + x && i < 11; i++)
+			player_ocean[x][i] = '#';
+	}
+	game_board(player_ocean);
+	system("pause");
+}
 
 int main()
 {
@@ -456,183 +494,25 @@ int main()
 	cout << endl << endl;
 
 		// Upsiuje koordinate carriera (1)
-		int x;
+		int x,ans;
 		char y;
+		cin >> ans;
+		for (int i = 5; i > 1; i--)
+		{
+			if (i == 3)
+			{
+				postavi_brod(ans, player_ocean, i);
+				postavi_brod(ans, player_ocean, i);
+				i -= 1;
+			}
+			postavi_brod(ans, player_ocean, i);
 
+		}
+		system("cls");
+		game_board(player_ocean);
+		return 0;
 		cout << endl;
-		cout << "Player 1: Where would you like to have your boat faced: " << endl;
-		cout << " " << "1.V (vertically)\n" << " " << "2.H (horizontally)\n";
-		string answer;
-		cin >> answer;
-
-		if (answer == "V" || answer == "v" || answer == "vertically" || answer == "Vertically")
-		{
-
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 5; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				--x;
-			}
-		}
-
-		if (answer == "H" || answer == "h" || answer == "horizontally" || answer == "Horizontally")
-		{
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 5; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				++y;
-			}
-		}
-
-		cout << "Player 1: Where would you like to have your boat faced: " << endl;
-		cout << " " << "1.V (vertically)\n" << " " << "2.H (horizontally)\n";
-		cin >> answer;
-		if (answer == "V" || answer == "v" || answer == "vertically" || answer == "Vertically")
-		{
-
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 4; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				--x;
-			}
-		}
-
-		if (answer == "H" || answer == "h" || answer == "horizontally" || answer == "Horizontally")
-		{
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 4; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				++y;
-			}
-		}
-		
-		cout << "Player 1: Where would you like to have your boat faced: " << endl;
-		cout << " " << "1.V (vertically)\n" << " " << "2.H (horizontally)\n";
-		cin >> answer;
-
-		if (answer == "V" || answer == "v" || answer == "vertically" || answer == "Vertically")
-		{
-
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 3; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				--x;
-			}
-		}
-
-		if (answer == "H" || answer == "h" || answer == "horizontally" || answer == "Horizontally")
-		{
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 3; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				++y;
-			}
-		}
 	
-		cout << "Player 1: Where would you like to have your boat faced: " << endl;
-		cout << " " << "1.V (vertically)\n" << " " << "2.H (horizontally)\n";
-		cin >> answer;
-
-		if (answer == "V" || answer == "v" || answer == "vertically" || answer == "Vertically")
-		{
-
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 3; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				--x;
-			}
-		}
-
-		if (answer == "H" || answer == "h" || answer == "horizontally" || answer == "Horizontally")
-		{
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 3; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				++y;
-			}
-		}
-		cout << "Player 1: Where would you like to have your boat faced: " << endl;
-		cout << " " << "1.V (vertically)\n" << " " << "2.H (horizontally)\n";
-		cin >> answer;
-
-		if (answer == "V" || answer == "v" || answer == "vertically" || answer == "Vertically")
-		{
-
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 2; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				--x;
-			}
-		}
-
-		if (answer == "H" || answer == "h" || answer == "horizontally" || answer == "Horizontally")
-		{
-			cout << "Where would you like to have the bow of your ship placed(enter coordinates): " << endl;
-			cin >> y >> x;
-			y = pretvorba(y);
-			for (int i = 0; i < 2; i++)
-			{
-				player_ocean[x][y] = '#';
-				//int boat_pos = player_ocean[x][y];
-				system("CLS");
-				ispis(player_ocean);
-				++y;
-			}
-		}
 
 		int hits_by_player = 0, hits_by_AI = 0, turns = 1;
 
