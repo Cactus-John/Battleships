@@ -5,21 +5,8 @@ using namespace std;
 
 int pretvorba(char y);
 void ispis(char player_ocean[][11]);
+void ispis2(char ocean_PLAYER_1[][11]);
 void postavljanje_brodova(char(&player_ocean)[11][11]);
-
-void ispis2(char ocean_PLAYER_1[11][11])
-{
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-			cout << ocean_PLAYER_1[i][j] << " ";
-		cout << endl;
-	}
-}
 
 void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_PLAYER_1)[11][11])
 {
@@ -37,7 +24,6 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 				player_ocean[i][j] = '~';
 		}
 	}
-
 	for (int i = 0; i < 11; i++)
 	{
 		for (int j = 0; j < 11; j++)
