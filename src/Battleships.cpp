@@ -6,8 +6,9 @@
 #include <cctype>
 #include <cstdlib>
 #include "PvP.h"
-using namespace std;
+#include "AI.h"
 
+using namespace std;
 
 int pretvorba(char y)
 {
@@ -73,6 +74,16 @@ void game_board2(char ocean_PLAYER_2[][11])
 		}
 		cout << endl << endl;
 	}
+}
+
+void save_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
+{
+	ofstream datoteka("battleships.bin", ofstream::out);
+	datoteka.write((char*)&player_ocean, sizeof(player_ocean));
+	datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+	datoteka.close();
+	if (datoteka.fail())
+		cout << "Greska kod otvaranja datoteke!" << endl;
 }
 
 void unos(int& x, int& inty, char y, bool zastavica)
@@ -175,14 +186,8 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			char unos;
 			cin >> unos;
 			if (tolower(unos) == 'y')
-			{
-				ofstream datoteka("battleships.bin", ofstream::out);
-				datoteka.write((char*)&player_ocean, sizeof(player_ocean));
-				datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
-				datoteka.close();
-				if (datoteka.fail())
-					cout << "Greska kod otvaranja datoteke!" << endl;
-			}
+				save_file(player_ocean, ocean_PLAYER_2);
+			
 
 		}
 		if (hits_by_player == 17)
@@ -257,14 +262,7 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 		char unos;
 		cin >> unos;
 		if (tolower(unos) == 'y')
-		{
-			ofstream datoteka("battleships.bin", ofstream::out);
-			datoteka.write((char*)&player_ocean, sizeof(player_ocean));
-			datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
-			datoteka.close();
-			if (datoteka.fail())
-				cout << "Greska kod otvaranja datoteke!" << endl;
-		}
+			save_file(player_ocean, ocean_PLAYER_2);
 		if (hits_by_player == 17)
 		{
 			cout << "You won" << endl;
@@ -308,6 +306,41 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 		turns++;
 	}
 }
+void postavljanje_brodova(char (&player_ocean)[11][11])
+{
+	int ans;
+	for (int i = 5; i > 1; i--)
+	{
+		cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
+		cin >> ans;
+		if (i == 3)
+		{
+			postavi_brod(ans, player_ocean, i);
+			cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
+			cin >> ans;
+			postavi_brod(ans, player_ocean, i);
+			i -= 1;
+			cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
+			cin >> ans;
+		}
+		postavi_brod(ans, player_ocean, i);
+	}
+	system("cls");
+	game_board(player_ocean);
+	cout << endl;
+	system("CLS");
+}
+
+void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
+{
+	ifstream datoteka("battleships.bin", ifstream::in);
+	datoteka.read((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+	datoteka.read((char*)&player_ocean, sizeof(player_ocean));
+	datoteka.close();
+	game_board(player_ocean);
+	game_board2(ocean_PLAYER_2);
+}
+
 
 int main()
 {
@@ -320,15 +353,8 @@ int main()
 	char y;
 	cout << "0. New game\n1. Load game\n";
 	cin >> load_GAME;
-	if(load_GAME)
-	{
-		ifstream datoteka("battleships.bin", ifstream::in);
-		datoteka.read((char*) &ocean_PLAYER_2, sizeof (ocean_PLAYER_2));
-		datoteka.read((char*)&player_ocean, sizeof(player_ocean));
-		datoteka.close();
-			game_board(player_ocean);
-			game_board2(ocean_PLAYER_2);
-	}
+	if (load_GAME)
+		load_file(player_ocean, ocean_PLAYER_2);
 
 	char ocean[11][11];
 	char znak = 'A';
@@ -366,404 +392,99 @@ int main()
 		for (int j = 0; j < 11; j++)
 			ocean_PLAYER_2[i][j] = ocean_PLAYER_1[i][j];
 	}
-	// selecting difficulty
-	int diff = 0;
-	cout << "Select difficulty:\n\t\t\t1.NOOB\n\t\t\t2.IMPOSSIBLE\n";
-	cin >> diff;
-	system("CLS");
-	//AI GENERATED BATTLESHIP
-	int r, p;
-	r = rand() % 10 + 1;
-	r = r % 2;
-	if (r == 0)
+	// selecting AI or PLAYER 
+	cout << "Do you want to play against AI or Player" << endl;
+	string odabir;
+	cin >> odabir;
+	if (odabir == "AI")
 	{
-		r = rand() % 10 + 1;
-		while (r + 4 > 10)
+		generating_AI(ocean);
+		cout << " Enemy teritory\n";
+		//Ispisuje igraču ploču protivnika
+		ispis(player_ocean);
+		cout << endl << endl;
+		cout << " Your teritory\n";
+		// Ispisuje igraču ploču igrača
+		for (int i = 0; i < 11; i++)
 		{
-			r = rand() % 10 + 1;
-
-		}
-		p = rand() % 10 + 1;
-		int Battleship_cordsAI[4][4];
-		for (int i = 0; i < 4; i++)
-		{
-			Battleship_cordsAI[i][0] = r;
-			Battleship_cordsAI[i][1] = p;
-			ocean[r + i][p] = '#';
-		}
-	}
-	else
-	{
-		r = rand() % 10 + 1;
-		p = rand() % 10 + 1;
-		while (p + 4 > 10)
-			p = rand() % 10 + 1;
-		int Battleship_cordsAI[4][4];
-		for (int i = 0; i < 4; i++)
-		{
-			Battleship_cordsAI[i][0] = r;
-			Battleship_cordsAI[i][1] = p;
-			ocean[r][p + i] = '#';
-		}
-	}
-
-	// AI GENERATED CARRIER
-
-	int sus = 0; //sus -> ships under ships
-	r = rand() % 10 + 1;
-	int zastavica = 0;
-	r = r % 2;
-	if (r == 0)
-	{
-		while (zastavica == 0)
-		{
-			r = rand() % 10 + 1;
-			while (r + 5 > 10)
+			if (i != 10)
+				cout << " " << i << " ";
+			else
+				cout << i << " ";
+			for (int j = 1; j < 11; j++)
 			{
-				r = rand() % 10 + 1;
+				cout << player_ocean[i][j] << " ";
 			}
-			p = rand() % 10 + 1;
-			int Carrier_cordsAI[5][5];
-			for (int i = 0; i < 5; i++)
-			{
-				Carrier_cordsAI[i][0] = r;
-				Carrier_cordsAI[i][1] = p;
-				if (ocean[r + i][p] == '#')
-					continue;
-			}
-			for (int i = 0; i < 5; i++)
-			{
-				Carrier_cordsAI[i][0] = r;
-				Carrier_cordsAI[i][1] = p;
-				ocean[r + i][p] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-	else
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			p = rand() % 10 + 1;
-			while (p + 5 > 10)
-				p = rand() % 10 + 1;
-			int Carrier_cordsAI[5][5];
-			for (int i = 0; i < 5; i++)
-			{
-				Carrier_cordsAI[i][0] = r;
-				Carrier_cordsAI[i][1] = p;
-				if (ocean[r][p + i] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-
-			for (int i = 0; i < 5; i++)
-			{
-				Carrier_cordsAI[i][0] = r;
-				Carrier_cordsAI[i][1] = p;
-				ocean[r][p + i] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-
-	// AI GENERATED CRUISER_SHIP
-	sus = 0;
-	r = rand() % 10 + 1;
-	zastavica = 0;
-	r = r % 2;
-	if (r == 0)
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			while (r + 3 > 10)
-			{
-				r = rand() % 10 + 1;
-			}
-			p = rand() % 10 + 1;
-			int Cruiser_cordsAI[5][5];
-			for (int i = 0; i < 3; i++)
-			{
-				Cruiser_cordsAI[i][0] = r;
-				Cruiser_cordsAI[i][1] = p;
-				if (ocean[r + i][p] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-
-			//Zapisuje u ploču
-			for (int i = 0; i < 3; i++)
-			{
-				Cruiser_cordsAI[i][0] = r;
-				Cruiser_cordsAI[i][1] = p;
-				ocean[r + i][p] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-	else
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			p = rand() % 10 + 1;
-			while (p + 3 > 10)
-				p = rand() % 10 + 1;
-			int Cruiser_cordsAI[3][3];
-			for (int i = 0; i < 3; i++)
-			{
-				Cruiser_cordsAI[i][0] = r;
-				Cruiser_cordsAI[i][1] = p;
-				if (ocean[r][p + i] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-
-			for (int i = 0; i < 3; i++)
-			{
-				Cruiser_cordsAI[i][0] = r;
-				Cruiser_cordsAI[i][1] = p;
-				ocean[r][p + i] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-
-	// AI GENERATED SUBMARINE_SHIP
-
-	sus = 0;
-	r = rand() % 10 + 1;
-	zastavica = 0;
-	r = r % 2;
-	if (r == 0)
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			while (r + 3 > 10)
-			{
-				r = rand() % 10 + 1;
-			}
-			p = rand() % 10 + 1;
-			int Submarine_cordsAI[3][3];
-			for (int i = 0; i < 3; i++)
-			{
-				Submarine_cordsAI[i][0] = r;
-				Submarine_cordsAI[i][1] = p;
-				if (ocean[r + i][p] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-			//Zapisuje u ploču
-			for (int i = 0; i < 3; i++)
-			{
-				Submarine_cordsAI[i][0] = r;
-				Submarine_cordsAI[i][1] = p;
-				ocean[r + i][p] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-	else
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			p = rand() % 10 + 1;
-			while (p + 3 > 10)
-				p = rand() % 10 + 1;
-			int Submarine_cordsAI[3][3];
-			for (int i = 0; i < 3; i++)
-			{
-				Submarine_cordsAI[i][0] = r;
-				Submarine_cordsAI[i][1] = p;
-				if (ocean[r][p + i] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-
-			for (int i = 0; i < 3; i++)
-			{
-				Submarine_cordsAI[i][0] = r;
-				Submarine_cordsAI[i][1] = p;
-				ocean[r][p + i] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-	// AI GENERATED DESTROYER_SHIP
-
-	sus = 1;
-	r = rand() % 10 + 1;
-	zastavica = 0;
-	r = r % 2;
-	if (r == 0)
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			while (r + 2 > 10)
-			{
-				r = rand() % 10 + 1;
-			}
-			p = rand() % 10 + 1;
-			int Destroyer_cordsAI[2][2];
-			for (int i = 0; i < 2; i++)
-			{
-				Destroyer_cordsAI[i][0] = r;
-				Destroyer_cordsAI[i][1] = p;
-				if (ocean[r + i][p] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-			//Zapisuje u ploču
-			for (int i = 0; i < 2; i++)
-			{
-				Destroyer_cordsAI[i][0] = r;
-				Destroyer_cordsAI[i][1] = p;
-				ocean[r + i][p] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-	else
-	{
-		while (zastavica == 0)
-		{
-			sus = 0;
-			r = rand() % 10 + 1;
-			p = rand() % 10 + 1;
-			while (p + 2 > 10)
-				p = rand() % 10 + 1;
-			int Destroyer_cordsAI[2][2];
-			for (int i = 0; i < 2; i++)
-			{
-				Destroyer_cordsAI[i][0] = r;
-				Destroyer_cordsAI[i][1] = p;
-				if (ocean[r][p + i] == '#')
-					sus = 1;
-			}
-			if (sus == 1)
-				continue;
-			for (int i = 0; i < 2; i++)
-			{
-				Destroyer_cordsAI[i][0] = r;
-				Destroyer_cordsAI[i][1] = p;
-				ocean[r][p + i] = '#';
-			}
-			zastavica = 1;
-		}
-	}
-	cout << " Enemy teritory\n";
-	//Ispisuje igraču ploču protivnika
-	ispis(player_ocean);
-	cout << endl << endl;
-	cout << " Your teritory\n";
-	// Ispisuje igraču ploču igrača
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << player_ocean[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl << endl;
-
-	// Upsiuje koordinate carriera (1)
-	int ans;
-	//cin >> ans;
-	for (int i = 5; i > 1; i--)
-	{
-		cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
-		cin >> ans;
-		if (i == 3)
-		{
-			postavi_brod(ans, player_ocean, i);
-			cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
-			cin >> ans;
-			postavi_brod(ans, player_ocean, i);
-			i -= 1;
-			cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
-			cin >> ans;
-		}
-		postavi_brod(ans, player_ocean, i);
-	}
-	system("cls");
-	game_board(player_ocean);
-	cout << endl;
-	system("CLS");
-
-	// Inicijalizira igraču ploču za igrača 2 (AI)
-	char ocean_PLAYER_AI[11][11];
-	znak = 'A';
-	for (int i = 0; i < 11; i++)
-	{
-		ocean_PLAYER_AI[i][0] = i + 1;
-		znak++;
-		for (int j = 0; j < 11; j++)
-		{
-			if (j == 0)
-				ocean_PLAYER_AI[i][j] = ocean[i][j];
-			if (i != 0)
-				ocean_PLAYER_AI[i][j] = '~';
-		}
-	}
-	// Ispisuje polje igraća 2 (AI-player 2)
-
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << " " << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << ocean_PLAYER_2[i][j] << " ";
+			cout << endl;
 		}
 		cout << endl << endl;
-	}
-	//Ispisuje polje igrača 1 (player)
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
+
+		// Postavlja brodove
+
+		postavljanje_brodova(player_ocean);
+
+		// Inicijalizira igraču ploču za igrača 2 (AI)
+		char ocean_PLAYER_AI[11][11];
+		znak = 'A';
+		for (int i = 0; i < 11; i++)
 		{
-			cout << player_ocean[i][j] << " ";
+			ocean_PLAYER_AI[i][0] = i + 1;
+			znak++;
+			for (int j = 0; j < 11; j++)
+			{
+				if (j == 0)
+					ocean_PLAYER_AI[i][j] = ocean[i][j];
+				if (i != 0)
+					ocean_PLAYER_AI[i][j] = '~';
+			}
 		}
-		cout << endl << endl;
+		// Ispisuje polje igraća 2 (AI-player 2)
+
+		for (int i = 0; i < 11; i++)
+		{
+			if (i != 10)
+				cout << " " << i << " ";
+			else
+				cout << " " << i << " ";
+			for (int j = 1; j < 11; j++)
+			{
+				cout << ocean_PLAYER_2[i][j] << " ";
+			}
+			cout << endl << endl;
+		}
+		//Ispisuje polje igrača 1 (player)
+		for (int i = 0; i < 11; i++)
+		{
+			if (i != 10)
+				cout << " " << i << " ";
+			else
+				cout << i << " ";
+			for (int j = 1; j < 11; j++)
+			{
+				cout << player_ocean[i][j] << " ";
+			}
+			cout << endl << endl;
+		}
+		int diff = 0;
+		cout << "Select difficulty:\n\t\t\t1.NOOB\n\t\t\t2.IMPOSSIBLE\n";
+		cin >> diff;
+		system("CLS");
+
+		// noob bot
+		if (diff == 1)
+			game_diff_1(y, x, player_ocean, ocean_PLAYER_2, ocean);
+
+		system("CLS");
+
+		// pro bot
+		if (diff == 2)
+			game_diff_2(y, x, player_ocean, ocean_PLAYER_2, ocean);
+
 	}
+	if (odabir == "Player")
+		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
+
 	
-	// noob bot
-	if (diff == 1)
-		game_diff_1(y, x, player_ocean, ocean_PLAYER_2, ocean);
-		
-	system("CLS");
-
-	// pro bot
-	if (diff == 2)
-		game_diff_2(y, x, player_ocean, ocean_PLAYER_2, ocean);	
 
 	return 0;
 }
