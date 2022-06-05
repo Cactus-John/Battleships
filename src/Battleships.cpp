@@ -8,12 +8,13 @@
 #include <string>
 #include "PvP.h"
 #include "AI.h"
+#include "ship_placement.h"
 
 using namespace std;
 
 int pretvorba(char y)
 {
-	y=toupper(y);	
+	y = toupper(y);	
 	switch(y)
 	{
 		case('A'):y = 1; break;
@@ -30,67 +31,6 @@ int pretvorba(char y)
 	return y;
 }
 
-void ispis(char player_ocean[][11])
-{
-	
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-			cout << player_ocean[i][j] << " ";
-		cout << endl;
-	}
-}
-
-void ispis2(char ocean_PLAYER_1[][11])
-{
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-			cout << ocean_PLAYER_1[i][j] << " ";
-		cout << endl;
-	}
-}
-
-void game_board(char player_ocean[][11])
-{
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << player_ocean[i][j] << '\t';
-		}
-		cout << endl << endl;
-	}
-}
-
-void game_board2(char ocean_PLAYER_2[][11])
-{
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << ocean_PLAYER_2[i][j] << '\t';
-		}
-		cout << endl << endl;
-	}
-}
-
 void save_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
 {
 	ofstream datoteka("battleships.bin", ofstream::out);
@@ -99,73 +39,6 @@ void save_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
 	datoteka.close();
 	if (datoteka.fail())
 		cout << "Greska kod otvaranja datoteke!" << endl;
-}
-
-void unos(int& x, int& inty, char y, bool zastavica)
-{
-	while (x < 0 || x > 10 || inty == 0 || zastavica == true)
-	{
-		cout << "Krivi unos\n";
-		system("pause");
-		cout << "Unesite kordinatu:";
-		cin >> y >> x;
-		inty = pretvorba(y);
-		zastavica = false;
-		system("cls");
-	}
-}
-
-void postavi_brod(int answer, char(&player_ocean)[11][11], int n)
-{
-	system("cls");
-	int x, inty;
-	char y;
-	bool zastavica = false;
-	cout << "Unesite kordinatu:";
-	cin >> y >> x;
-	inty = pretvorba(y);
-	unos(x, inty, y, zastavica);
-	if (answer == 1) // okomito
-	{
-		ponovno:
-			for (int i = x; i < n + x; i++)//mislim da ako 5ticu postovis okmoito na a1 da ce proc? ->projvera spigana
-				{
-					zastavica = false;
-					if (player_ocean[i][inty] == '#' || i > 10)
-					{
-						//exit(0);
-						zastavica = true;
-						unos(x, inty, y, zastavica);
-						//continue;
-						goto ponovno;
-					}
-				}
-
-		for (int i = x; i < n + x && i < 11; i++)
-			player_ocean[i][inty] = '#';
-	}
-
-	if (answer == 0) // vodoravno
-	{
-	ponovno_2:
-		for (int i = inty; i < n + inty; i++)
-			{
-				zastavica = false;
-				if (player_ocean[x][i] == '#' || i > 10)
-				{
-					zastavica = true;
-					unos(x, inty, y, zastavica);
-					goto ponovno_2;
-				}
-			}
-
-		for (int i = inty; i < n + inty && i < 11; i++)
-		{
-			player_ocean[x][i] = '#';
-		}
-	}
-	game_board(player_ocean);
-	system("pause");
 }
 
 void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11], char(&ocean)[11][11])
@@ -321,30 +194,6 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 		turns++;
 	}
 }
-void postavljanje_brodova(char (&player_ocean)[11][11])
-{
-	int ans;
-	for (int i = 5; i > 1; i--)
-	{
-		cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
-		cin >> ans;
-		if (i == 3)
-		{
-			postavi_brod(ans, player_ocean, i);
-			cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
-			cin >> ans;
-			postavi_brod(ans, player_ocean, i);
-			i -= 1;
-			cout << "Zelitie li postaviti brod:\n0.Vodorano\n1.Okomito\n";
-			cin >> ans;
-		}
-		postavi_brod(ans, player_ocean, i);
-	}
-	system("cls");
-	game_board(player_ocean);
-	cout << endl;
-	system("CLS");
-}
 
 void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
 {
@@ -355,7 +204,6 @@ void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
 	game_board(player_ocean);
 	game_board2(ocean_PLAYER_2);
 }
-
 
 int main()
 {
@@ -468,18 +316,8 @@ int main()
 			cout << endl << endl;
 		}
 		//Ispisuje polje igrača 1 (player)
-		for (int i = 0; i < 11; i++)
-		{
-			if (i != 10)
-				cout << " " << i << " ";
-			else
-				cout << i << " ";
-			for (int j = 1; j < 11; j++)
-			{
-				cout << player_ocean[i][j] << " ";
-			}
-			cout << endl << endl;
-		}
+		ispis(player_ocean);
+
 		int diff = 0;
 		cout << "Select difficulty:\n\t\t\t1.NOOB\n\t\t\t2.IMPOSSIBLE\n";
 		cin >> diff;
@@ -499,7 +337,6 @@ int main()
 	if (odabir == "Player")
 		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
 
-	
 
 	return 0;
 }
