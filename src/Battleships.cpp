@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cctype>
 #include <cstdlib>
+#include "PvP.h"
 using namespace std;
 
 
@@ -168,6 +169,21 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			game_board2(ocean_PLAYER_2);
 			//Ispisuje polje igrača 1 (player)
 			game_board(player_ocean);
+
+			cout << "Would you like to save the game: " << endl;
+			cout << "Y or N" << endl;
+			char unos;
+			cin >> unos;
+			if (tolower(unos) == 'y')
+			{
+				ofstream datoteka("battleships.bin", ofstream::out);
+				datoteka.write((char*)&player_ocean, sizeof(player_ocean));
+				datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+				datoteka.close();
+				if (datoteka.fail())
+					cout << "Greska kod otvaranja datoteke!" << endl;
+			}
+
 		}
 		if (hits_by_player == 17)
 		{
@@ -236,6 +252,19 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			game_board(player_ocean);
 			// turns++;
 		}
+		cout << "Would you like to save the game: " << endl;
+		cout << "Y or N" << endl;
+		char unos;
+		cin >> unos;
+		if (tolower(unos) == 'y')
+		{
+			ofstream datoteka("battleships.bin", ofstream::out);
+			datoteka.write((char*)&player_ocean, sizeof(player_ocean));
+			datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+			datoteka.close();
+			if (datoteka.fail())
+				cout << "Greska kod otvaranja datoteke!" << endl;
+		}
 		if (hits_by_player == 17)
 		{
 			cout << "You won" << endl;
@@ -250,15 +279,18 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			{
 				r = rand() % 10 + 1;
 				p = rand() % 10 + 1;
-				flag = 1;
+				flag = true;
 			}
 			if (player_ocean[r][p] == '#')
 			{
 				hits_by_AI++;
 				player_ocean[r][p] = 'X';
 			}
-			else
+			else 
+			{
 				player_ocean[r][p] = 'O';
+			}
+					
 			// Ispisuje polje igraća 2 (AI-player 2)
 			system("CLS");
 
@@ -283,6 +315,9 @@ int main()
 	bool load_GAME = false;
 	char player_ocean[11][11];
 	char ocean_PLAYER_2[11][11];
+	
+	int x;
+	char y;
 	cout << "0. New game\n1. Load game\n";
 	cin >> load_GAME;
 	if(load_GAME)
@@ -293,7 +328,6 @@ int main()
 		datoteka.close();
 			game_board(player_ocean);
 			game_board2(ocean_PLAYER_2);
-		
 	}
 
 	char ocean[11][11];
@@ -311,7 +345,7 @@ int main()
 				ocean[i][j] = '~';
 		}
 	}
-
+	
 	znak = 'A';
 	for (int i = 0; i < 11; i++)
 	{
@@ -655,8 +689,7 @@ int main()
 	cout << endl << endl;
 
 	// Upsiuje koordinate carriera (1)
-	int x,ans;
-	char y;
+	int ans;
 	//cin >> ans;
 	for (int i = 5; i > 1; i--)
 	{
@@ -677,8 +710,6 @@ int main()
 	system("cls");
 	game_board(player_ocean);
 	cout << endl;
-
-	int hits_by_player = 0, hits_by_AI = 0, turns = 1;
 	system("CLS");
 
 	// Inicijalizira igraču ploču za igrača 2 (AI)
@@ -723,24 +754,11 @@ int main()
 		}
 		cout << endl << endl;
 	}
-
-	char unos;
-	cout << "Would you like to save the game: " << endl;
-	cout << "Y or N" << endl;
-	cin >> unos;
-	if (tolower(unos) == 'y')
-	{
-		ofstream datoteka("battleships.bin", ofstream::out);
-		datoteka.write((char*)&player_ocean, sizeof(player_ocean));
-		datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
-		datoteka.close();
-		if (datoteka.fail())
-			cout << "Greska kod otvaranja datoteke!" << endl;
-	}
+	
 	// noob bot
 	if (diff == 1)
 		game_diff_1(y, x, player_ocean, ocean_PLAYER_2, ocean);
-
+		
 	system("CLS");
 
 	// pro bot
