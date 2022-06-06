@@ -1,6 +1,5 @@
 ﻿
 #include <iostream>
-#include <fstream>
 using namespace std;
 
 void generating_AI(char(&ocean)[11][11])

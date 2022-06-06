@@ -1,13 +1,12 @@
 ﻿
-#include <iostream>
 #include <ctime>
-#include <fstream>
 #include <cstdio>
 #include <cctype>
 #include <cstdlib>
 #include <string>
-#include "PvP.h"
 #include "AI.h"
+#include "bin_file.h"
+#include "PvP.h"
 #include "ship_placement.h"
 
 using namespace std;
@@ -31,16 +30,6 @@ int pretvorba(char y)
 	return y;
 }
 
-void save_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
-{
-	ofstream datoteka("battleships.bin", ofstream::out);
-	datoteka.write((char*)&player_ocean, sizeof(player_ocean));
-	datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
-	datoteka.close();
-	if (datoteka.fail())
-		cout << "Greska kod otvaranja datoteke!" << endl;
-}
-
 void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11], char(&ocean)[11][11])
 {
 	int hits_by_player = 0, hits_by_AI = 0, turns = -1;
@@ -59,6 +48,12 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 				ocean_PLAYER_2[x][y] = 'X';
 				ocean[x][y] = 'X';
 			}
+			else if (ocean[x][y] == 'X')
+			{
+				cout << "Ovdje ste vec gadali! Gadajte drugu koordinatu: " << endl;
+				cin >> y >> x;
+				y = pretvorba(y);
+			}
 			else
 			{
 				ocean_PLAYER_2[x][y] = 'O';
@@ -76,7 +71,6 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			if (tolower(unos) == 'y')
 				save_file(player_ocean, ocean_PLAYER_2);
 			
-
 		}
 		if (hits_by_player == 17)
 		{
@@ -195,16 +189,6 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 	}
 }
 
-void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
-{
-	ifstream datoteka("battleships.bin", ifstream::in);
-	datoteka.read((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
-	datoteka.read((char*)&player_ocean, sizeof(player_ocean));
-	datoteka.close();
-	game_board(player_ocean);
-	game_board2(ocean_PLAYER_2);
-}
-
 int main()
 {
 	srand(time(nullptr));
@@ -255,6 +239,7 @@ int main()
 		for (int j = 0; j < 11; j++)
 			ocean_PLAYER_2[i][j] = ocean_PLAYER_1[i][j];
 	}
+
 	// selecting AI or PLAYER 
 	cout << "Do you want to play against AI or Player" << endl;
 	string odabir;
@@ -262,28 +247,13 @@ int main()
 	if (odabir == "AI")
 	{
 		generating_AI(ocean);
-		cout << " Enemy teritory\n";
-		//Ispisuje igraču ploču protivnika
-		ispis(player_ocean);
 		cout << endl << endl;
 		cout << " Your teritory\n";
-		// Ispisuje igraču ploču igrača
-		for (int i = 0; i < 11; i++)
-		{
-			if (i != 10)
-				cout << " " << i << " ";
-			else
-				cout << i << " ";
-			for (int j = 1; j < 11; j++)
-			{
-				cout << player_ocean[i][j] << " ";
-			}
-			cout << endl;
-		}
+		// Ispisuje ploču igrača
+		ispis(player_ocean);
 		cout << endl << endl;
 
 		// Postavlja brodove
-
 		postavljanje_brodova(player_ocean);
 
 		// Inicijalizira igraču ploču za igrača 2 (AI)
@@ -301,22 +271,6 @@ int main()
 					ocean_PLAYER_AI[i][j] = '~';
 			}
 		}
-		// Ispisuje polje igraća 2 (AI-player 2)
-
-		for (int i = 0; i < 11; i++)
-		{
-			if (i != 10)
-				cout << " " << i << " ";
-			else
-				cout << " " << i << " ";
-			for (int j = 1; j < 11; j++)
-			{
-				cout << ocean_PLAYER_2[i][j] << " ";
-			}
-			cout << endl << endl;
-		}
-		//Ispisuje polje igrača 1 (player)
-		ispis(player_ocean);
 
 		int diff = 0;
 		cout << "Select difficulty:\n\t\t\t1.NOOB\n\t\t\t2.IMPOSSIBLE\n";
@@ -336,7 +290,6 @@ int main()
 	}
 	if (odabir == "Player")
 		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
-
 
 	return 0;
 }

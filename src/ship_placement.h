@@ -1,5 +1,6 @@
 
 #include <iostream>
+using namespace std;
 
 void ispis(char player_ocean[][11])
 {
