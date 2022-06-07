@@ -14,7 +14,6 @@ void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11]);
 
 void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
 {
-
 	char znak = 'A';
 	char oceanmask1[11][11];
 	char oceanmask2[11][11];
@@ -49,29 +48,31 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 	}
 	
 	int hits_by_player1 = 0, hits_by_player2 = 0, turns = 0;
+	string player1, player2;
+	cout << "Enter player's 1 name: ";
+	cin >> player1;
+	cout << endl << "Enter player's 2 name: ";
+	cin >> player2;
+	system("cls");
 
 	cout << endl;
 	game_board(player_ocean);
-	cout << "Player 1 place your ships: " << endl;
+	cout << player1 << "'s turn to place the ships:" << endl;
 	postavljanje_brodova(player_ocean);
-	//game_board(player_ocean);
 
 	cout << endl;
 	game_board2(ocean_PLAYER_2);
-	cout << "Player 2 place your ships: " << endl;
+	cout << player2 << "'s turn to place the ships:" << endl;
 	postavljanje_brodova2(ocean_PLAYER_2);
-	//game_board2(ocean_PLAYER_2);
 
 	while (hits_by_player1 < 18 || hits_by_player2 < 18)
 	{
-		string player1, player2;
+		
 		// PLAYER 1 turn
 		if (turns % 2 == 0)
 		{
-			game_board(oceanmask2); // igrac 1
-			game_board(oceanmask1); // igrac 1
-			cout << endl << "PLAYER'S 1 turn to play: " << endl;
-			cout << "Enter coordinates where you want to shoot: " << endl;
+			cout << endl << player1 << "'s turn to play: " << endl;
+			cout << player1 << ", where do you want to shoot: " << endl;
 			cin >> y >> x;
 			y = pretvorba(y);	
 		opet:
@@ -86,10 +87,10 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 			else if (ocean_PLAYER_2[x][y] == 'X')
 			{
 				
-				cout << "Ovdje ste vec pucali! Gadajte drugu koordinatu: " << endl;
+				cout << "Generale, ovdje ste vec pucali! Gadajte drugu koordinatu: " << endl;
 				cin >> y >> x;
 				y = pretvorba(y);
-				goto opet; // goto najjaci ++++++++++++++++
+				goto opet; 
 			}
 			else
 			{
@@ -99,25 +100,25 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 			}
 			system("CLS");
 			// Ispisuje polje igraća 2 (PLAYER 1)
-			game_board(oceanmask2);
-			//Ispisuje polje igrača 1 (PLAYER 2)
+			cout << "\t\t\t" << player1 << "'s game board\n";
+			cout << "--------------------------------------------------------------------------" << endl;
 			game_board(oceanmask1);
-
+			//Ispisuje polje igrača 1 (PLAYER 2)
+			cout << "--------------------------------------------------------------------------" << endl;
+			cout << "\t\t\t" << player2 << "'s game board\n";
+			game_board(oceanmask2);
 		}
 		if (hits_by_player1 == 17)
 		{
-			cout << "PLAYER 1 has WON!\nPLAYER 2 has LOST!" << endl;
+			cout << player1 << " has WON!" << endl << player2 << " has LOST!" << endl;
 			exit(0);
 
 		}
 		// PLAYER 2 turn
 		if (turns % 2 == 1)
 		{
-
-			game_board2(oceanmask1); //igrac 2 
-			game_board2(oceanmask2); //igrac 2 
-			cout << "PLAYER'S 2 turn to play: " << endl;
-			cout << "Enter coordinates where you want to shoot: " << endl;
+			cout << endl << player2 << "'s turn to play: " << endl;
+			cout << player2 << ", where do you want to shoot: " << endl;
 			cin >> y >> x;
 			y = pretvorba(y);
 		opet2:
@@ -129,7 +130,7 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 			}
 			else if (player_ocean[x][y] == 'X')
 			{
-				cout << "Generale, ovdje ste vec pucali! Lupaj drugu koordinatu: " << endl;
+				cout << "Generale, ovdje ste vec pucali! Gadajte drugu koordinatu: " << endl;
 				cin >> y >> x;
 				y = pretvorba(y);
 				goto opet2;
@@ -141,21 +142,24 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 
 			}
 			system("CLS");
-			// Ispisuje polje igraća 1 (PLAYER 2)
+			// Ispisuje polje igraća (PLAYER 2)
+			cout << "\t\t\t" << player2 << "'s game board\n";
+			cout << "--------------------------------------------------------------------------" << endl;
 			game_board(oceanmask2);
-			//Ispisuje polje igrača 2 (PLAYER 1)-ocenmask 
-			cout << "-------------------------";
+			//Ispisuje polje igrača (PLAYER 1)  
+			cout << "--------------------------------------------------------------------------" << endl;
+			cout << "\t\t\t" << player1 << "'s game board\n";
 			game_board(oceanmask1);
 
 		}
 		if (hits_by_player2 == 17)
 		{
-			cout << "PLAYER 2 has WON!\nPLAYER 1 has LOST!" << endl;
+			cout << player2 << " has WON!" << endl << player1 << " has LOST!" << endl;
 			exit(0);
 		}
 		turns++;
-		save_file(player_ocean, ocean_PLAYER_2);
+		save_file(oceanmask1, oceanmask2);
 	}
-		// dodaj unos imena igraca i na kraju ime pobjednika tj. gubitnika;
+		
 }
 	

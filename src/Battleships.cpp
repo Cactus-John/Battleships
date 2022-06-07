@@ -68,7 +68,7 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			//save_file(player_ocean, ocean_PLAYER_2);
 			
 		}
-		if (hits_by_player == 17)
+		if (hits_by_player == 17) 
 		{
 			//string odabir;
 			cout << "You won" << endl;
@@ -181,7 +181,6 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 		{
 			//string odabir;
 			cout << "You lost" << endl;
-			cout << "If you want to leave the game just press any key! Good luck!" << endl;
 			exit(0);
 		}
 		turns++;
