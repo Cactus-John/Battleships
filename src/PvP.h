@@ -50,9 +50,9 @@ void player_v_player(char &y, int &x, char (&player_ocean)[11][11], char(&ocean_
 	int hits_by_player1 = 0, hits_by_player2 = 0, turns = 0;
 	string player1, player2;
 	cout << "Enter player's 1 name: ";
-	cin >> player1;
+	getline(cin, player1);
 	cout << endl << "Enter player's 2 name: ";
-	cin >> player2;
+	getline(cin, player2);
 	system("cls");
 
 	cout << endl;
