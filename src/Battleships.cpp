@@ -4,7 +4,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <string>
-#include "AI.h"
+#include "generate_AI.h"
 #include "bin_file.h"
 #include "PvP.h"
 #include "ship_placement.h"
@@ -42,6 +42,7 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			cout << "Enter cordinates where you want to shoot: " << endl;
 			cin >> y >> x;
 			y = pretvorba(y);
+		opet3:
 			if (ocean[x][y] == '#')
 			{
 				hits_by_player++;
@@ -53,6 +54,7 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 				cout << "Ovdje ste vec gadali! Gadajte drugu koordinatu: " << endl;
 				cin >> y >> x;
 				y = pretvorba(y);
+				goto opet3;
 			}
 			else
 			{
@@ -63,13 +65,7 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			game_board2(ocean_PLAYER_2);
 			//Ispisuje polje igrača 1 (player)
 			game_board(player_ocean);
-
-			cout << "Would you like to save the game: " << endl;
-			cout << "Y or N" << endl;
-			char unos;
-			cin >> unos;
-			if (tolower(unos) == 'y')
-				save_file(player_ocean, ocean_PLAYER_2);
+			//save_file(player_ocean, ocean_PLAYER_2);
 			
 		}
 		if (hits_by_player == 17)
@@ -115,17 +111,25 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 
 	while (hits_by_player < 18 || hits_by_AI < 18)
 	{
+		//Player turn
 		if (turns % 2 == 1)
 		{
 			cout << "Enter cordinates where you want to shoot:\n";
 			cin >> y >> x;
 			y = pretvorba(y);
-
+		opet4:
 			if (ocean[x][y] == '#')
 			{
 				ocean_PLAYER_2[x][y] = 'X';
 				ocean[x][y] = 'X';
 				hits_by_player++;
+			}
+			else if (ocean[x][y] == 'X')
+			{
+				cout << "Ovdje ste vec gadali! Gadajte drugu koordinatu: " << endl;
+				cin >> y >> x;
+				y = pretvorba(y);
+				goto opet4;
 			}
 			else
 			{
@@ -139,12 +143,7 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			game_board(player_ocean);
 			// turns++;
 		}
-		cout << "Would you like to save the game: " << endl;
-		cout << "Y or N" << endl;
-		char unos;
-		cin >> unos;
-		if (tolower(unos) == 'y')
-			save_file(player_ocean, ocean_PLAYER_2);
+		//save_file(player_ocean, ocean_PLAYER_2);
 		if (hits_by_player == 17)
 		{
 			cout << "You won" << endl;
