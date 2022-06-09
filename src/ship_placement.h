@@ -36,8 +36,11 @@ void ispis2(char ocean_PLAYER_1[][11])
 
 void game_board(char player_ocean[][11])
 {
+
+	cout << "\t\t" << "--------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < 11; i++)
 	{
+		cout << "\t\t";
 		if (i != 10)
 			cout << " " << i << " ";
 		else
@@ -48,6 +51,7 @@ void game_board(char player_ocean[][11])
 		}
 		cout << endl << endl;
 	}
+	cout << "\t\t" << "--------------------------------------------------------------------------" << endl;
 }
 
 void game_board2(char ocean_PLAYER_2[][11])
@@ -207,7 +211,7 @@ void postavi_brod2(int answer, char(&ocean_PLAYER_2)[11][11], int n)
 			ocean_PLAYER_2[x][i] = '#';
 		}
 	}
-	game_board2(ocean_PLAYER_2);
+	game_board(ocean_PLAYER_2);
 	system("pause");
 }
 
@@ -231,7 +235,7 @@ void postavljanje_brodova2(char(&ocean_PLAYER_2)[11][11])
 		postavi_brod2(ans, ocean_PLAYER_2, i);
 	}
 	system("cls");
-	game_board2(ocean_PLAYER_2);
+	game_board(ocean_PLAYER_2);
 	cout << endl;
 	system("CLS");
 }

@@ -193,13 +193,13 @@ int main()
 	bool load_GAME = false;
 	char player_ocean[11][11];
 	char ocean_PLAYER_2[11][11];
+	char oceanmask1[11][11];
+	char oceanmask2[11][11];
 	
 	int x;
 	char y;
-	cout << "0. New game\n1. Load game\n";
-	cin >> load_GAME;
-	if (load_GAME)
-		load_file(player_ocean, ocean_PLAYER_2);
+	
+		
 
 	char ocean[11][11];
 	char znak = 'A';
@@ -287,7 +287,18 @@ int main()
 
 	}
 	if (odabir == "Player")
+	{
+		cout << "0. New game\n1. Load game\n";
+		cin >> load_GAME;
+		system("cls");
+		if (load_GAME)
+		{
+			load_file(oceanmask1, oceanmask2);
+
+		}
 		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
+	}
+		
 
 	return 0;
 }
