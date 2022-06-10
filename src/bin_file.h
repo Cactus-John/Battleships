@@ -5,7 +5,6 @@
 using namespace std;
 
 void game_board(char player_ocean[][11]);
-void game_board2(char ocean_PLAYER_2[][11]);
 void player_v_player(char &y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11]);
 
 void save_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
@@ -31,4 +30,5 @@ void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
 	}	
 	game_board(player_ocean);
 	game_board(ocean_PLAYER_2);
+	
 }

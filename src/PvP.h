@@ -6,17 +6,13 @@ using namespace std;
 
 int pretvorba(char y);
 void game_board(char player_ocean[][11]);
-void game_board2(char ocean_PLAYER_2[][11]);
 void postavljanje_brodova(char(&player_ocean)[11][11]);
 void postavljanje_brodova2(char(&ocean_PLAYER_2)[11][11]);
 void save_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11]);
 void load_file(char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11]);
 
 void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11])
-{
-	
-	
-	
+{	
 	char znak = 'A';
 	char oceanmask1[11][11];
 	char oceanmask2[11][11];
@@ -41,14 +37,21 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 				oceanmask1[i][j] = '~';
 				oceanmask2[i][j] = '~';
 			}
-
 		}
 	}
-
 	for (int i = 0; i < 11; i++)
 	{
 		for (int j = 0; j < 11; j++)
 			ocean_PLAYER_2[i][j] = player_ocean[i][j];
+	}
+
+	bool load_GAME = false;
+	cout << "0. New game\n1. Load game\n";
+	cin >> load_GAME;
+	if (load_GAME)
+	{
+		load_file(oceanmask1, oceanmask2);
+		  
 	}
 
 	int hits_by_player1 = 0, hits_by_player2 = 0, turns = 0;
@@ -70,12 +73,13 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 	cout << player2 << "'s turn to place the ships:" << endl;
 	postavljanje_brodova2(ocean_PLAYER_2);
 
-	
 	while (hits_by_player1 < 18 || hits_by_player2 < 18)
 	{
+		bool flag = false;
 		// PLAYER 1 turn
 		if (turns % 2 == 0)
 		{
+			flag = true;
 			cout << endl << player1 << "'s turn to play: " << endl;
 			cout << player1 << ", where do you want to shoot: " << endl;
 			cin >> y >> x;
@@ -166,6 +170,6 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 		}
 		turns++;
 		save_file(oceanmask1, oceanmask2);
-	}
+	}	
 }
 	

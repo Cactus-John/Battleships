@@ -3,37 +3,6 @@
 #include <iostream>
 using namespace std;
 
-void ispis(char player_ocean[][11])
-{
-
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-			cout << player_ocean[i][j] << " ";
-		cout << endl;
-	}
-}
-
-void ispis2(char ocean_PLAYER_1[][11])
-{
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << ocean_PLAYER_1[i][j] << '\t';
-		}
-		cout << endl << endl;
-	}
-}
-
 void game_board(char player_ocean[][11])
 {
 
@@ -52,22 +21,6 @@ void game_board(char player_ocean[][11])
 		cout << endl << endl;
 	}
 	cout << "\t\t" << "--------------------------------------------------------------------------" << endl;
-}
-
-void game_board2(char ocean_PLAYER_2[][11])
-{
-	for (int i = 0; i < 11; i++)
-	{
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
-		for (int j = 1; j < 11; j++)
-		{
-			cout << ocean_PLAYER_2[i][j] << '\t';
-		}
-		cout << endl << endl;
-	}
 }
 
 void unos(int& x, int& inty, char y, bool zastavica)

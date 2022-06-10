@@ -62,8 +62,10 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			}
 			system("CLS");
 			// Ispisuje polje igraća 2 (AI-player 2)
-			game_board2(ocean_PLAYER_2);
+			cout << "Your game board" << endl;
+			game_board(ocean_PLAYER_2);
 			//Ispisuje polje igrača 1 (player)
+			cout << "AI game board" << endl;
 			game_board(player_ocean);
 			//save_file(player_ocean, ocean_PLAYER_2);
 			
@@ -93,8 +95,10 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			}
 			system("CLS");
 			// Ispisuje polje igraća 2 (AI-player 2)
-			game_board2(ocean_PLAYER_2);
+			cout << "Your game board" << endl;
+			game_board(ocean_PLAYER_2);
 			//Ispisuje polje igrača 1 (player)
+			cout << "AI game board" << endl;
 			game_board(player_ocean);
 		}
 		if (hits_by_AI == 17)
@@ -102,6 +106,7 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			cout << "You lost" << endl;
 			exit(0);
 		}
+		save_file(player_ocean, ocean_PLAYER_2);
 	}
 }
 
@@ -138,8 +143,10 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			// Ispisuje polje igraća 2 (AI-player 2)
 			system("CLS");
 
-			game_board2(ocean_PLAYER_2);
+			cout << "Your game board" << endl;
+			game_board(ocean_PLAYER_2);
 			//Ispisuje polje igrača 1 (player)
+			cout << "AI game board" << endl;
 			game_board(player_ocean);
 			// turns++;
 		}
@@ -172,9 +179,10 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 					
 			// Ispisuje polje igraća 2 (AI-player 2)
 			system("CLS");
-
-			game_board2(ocean_PLAYER_2);
+			cout << "Your game board" << endl;
+			game_board(ocean_PLAYER_2);
 			//Ispisuje polje igrača 1 (player)
+			cout << "AI game board" << endl;
 			game_board(player_ocean);
 		}
 		if (hits_by_AI == 17)
@@ -184,6 +192,7 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			exit(0);
 		}
 		turns++;
+		save_file(player_ocean, ocean_PLAYER_2);
 	}
 }
 
@@ -193,14 +202,9 @@ int main()
 	bool load_GAME = false;
 	char player_ocean[11][11];
 	char ocean_PLAYER_2[11][11];
-	char oceanmask1[11][11];
-	char oceanmask2[11][11];
 	
 	int x;
 	char y;
-	
-		
-
 	char ocean[11][11];
 	char znak = 'A';
 
@@ -244,13 +248,17 @@ int main()
 	cin >> odabir;
 	if (odabir == "AI")
 	{
+		bool load_GAME = false;
+		cout << "0. New game\n1. Load game\n";
+		cin >> load_GAME;
+		system("cls");
+		if (load_GAME)
+		{
+			load_file(player_ocean, ocean_PLAYER_2);
+		}
+		
 		generating_AI(ocean);
 		cout << endl << endl;
-		cout << " Your teritory\n";
-		// Ispisuje ploču igrača
-		ispis(player_ocean);
-		cout << endl << endl;
-
 		// Postavlja brodove
 		postavljanje_brodova(player_ocean);
 
@@ -288,17 +296,8 @@ int main()
 	}
 	if (odabir == "Player")
 	{
-		cout << "0. New game\n1. Load game\n";
-		cin >> load_GAME;
-		system("cls");
-		if (load_GAME)
-		{
-			load_file(oceanmask1, oceanmask2);
-
-		}
 		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
 	}
 		
-
 	return 0;
 }
