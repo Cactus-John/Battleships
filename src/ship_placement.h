@@ -5,7 +5,6 @@ using namespace std;
 
 void game_board(char player_ocean[][11])
 {
-
 	cout << "\t\t" << "--------------------------------------------------------------------------" << endl;
 	for (int i = 0; i < 11; i++)
 	{

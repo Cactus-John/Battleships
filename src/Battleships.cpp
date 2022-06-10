@@ -5,7 +5,6 @@
 #include <cstdlib>
 #include <string>
 #include "generate_AI.h"
-#include "bin_file.h"
 #include "PvP.h"
 #include "ship_placement.h"
 
@@ -32,7 +31,9 @@ int pretvorba(char y)
 
 void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11], char(&ocean)[11][11])
 {
+
 	int hits_by_player = 0, hits_by_AI = 0, turns = -1;
+	fstream datoteka;
 	while (hits_by_player < 18 || hits_by_AI < 18)
 	{
 		turns++;
@@ -106,13 +107,17 @@ void game_diff_1(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			cout << "You lost" << endl;
 			exit(0);
 		}
-		save_file(player_ocean, ocean_PLAYER_2);
+		datoteka.open("battleships.bin", ios::binary | ios::out);
+		datoteka.write((char*)&player_ocean, sizeof(player_ocean));
+		datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+		datoteka.close();
 	}
 }
 
 void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER_2)[11][11], char(&ocean)[11][11])
 {
 	int hits_by_player = 0, hits_by_AI = 0, turns = 0;
+	fstream datoteka;
 
 	while (hits_by_player < 18 || hits_by_AI < 18)
 	{
@@ -192,13 +197,18 @@ void game_diff_2(char& y, int&x, char(&player_ocean)[11][11], char(&ocean_PLAYER
 			exit(0);
 		}
 		turns++;
-		save_file(player_ocean, ocean_PLAYER_2);
+
+		datoteka.open("battleships.bin", ios::binary | ios::out);
+		datoteka.write((char*)&player_ocean, sizeof(player_ocean));
+		datoteka.write((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+		datoteka.close();
 	}
 }
 
 int main()
 {
 	srand(time(nullptr));
+	fstream datoteka, file;
 	bool load_GAME = false;
 	char player_ocean[11][11];
 	char ocean_PLAYER_2[11][11];
@@ -254,7 +264,16 @@ int main()
 		system("cls");
 		if (load_GAME)
 		{
-			load_file(player_ocean, ocean_PLAYER_2);
+			datoteka.open("battleships.bin", ios::binary | ios::in);
+			if (datoteka.fail())
+			{
+				cout << "Greska kod ucitavanja datoteke!" << endl;
+				exit(0);
+			}
+
+			datoteka.read((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+			datoteka.read((char*)&player_ocean, sizeof(player_ocean));
+			datoteka.close();
 		}
 		
 		generating_AI(ocean);
