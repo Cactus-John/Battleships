@@ -253,6 +253,7 @@ int main()
 	}
 
 	// selecting AI or PLAYER 
+	odabir:
 	cout << "Do you want to play against AI or Player" << endl;
 	string odabir;
 	cin >> odabir;
@@ -313,9 +314,15 @@ int main()
 			game_diff_2(y, x, player_ocean, ocean_PLAYER_2, ocean);
 
 	}
-	if (odabir == "Player")
+	
+	if (odabir == "Player" || odabir == "player")
 	{
 		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
+	}
+	else
+	{
+		cout << "Krivi unos! Molim vas upisite: Player ili player" << endl;
+		goto odabir;
 	}
 		
 	return 0;
