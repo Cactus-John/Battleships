@@ -22,43 +22,13 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 	char znak = 'A';
 	char oceanmask1[11][11];
 	char oceanmask2[11][11];
-	for (int i = 0; i < 11; i++)
-	{
-		player_ocean[i][0] = i + 1;
-		oceanmask1[i][0] = i + 1;
-		oceanmask2[i][0] = i + 1;
-		for (int j = 0; j < 11; j++)
-		{
-			znak++;
-			if (i == 0)
-			{
-				player_ocean[i][j] = znak - 2;
-				oceanmask1[i][j] = znak - 2;
-				oceanmask2[i][j] = znak - 2;
-			}
-
-			else
-			{
-				player_ocean[i][j] = '~';
-				oceanmask1[i][j] = '~';
-				oceanmask2[i][j] = '~';
-			}
-		}
-	}
-	for (int i = 0; i < 11; i++)
-	{
-		for (int j = 0; j < 11; j++)
-			ocean_PLAYER_2[i][j] = player_ocean[i][j];
-	}
-	
 	game items;
-	fstream datoteka, file;
+	fstream datoteka;
 	bool load_GAME = false;
 	cout << "0.New game\n1.Load game" << endl;
 	cin >> load_GAME;
 	if (load_GAME)
 	{
-
 		datoteka.open("battleships.bin", ios::binary | ios::in);
 		if (datoteka.fail())
 		{
@@ -68,14 +38,112 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 
 		datoteka.read((char*)&player_ocean, sizeof(player_ocean));
 		datoteka.read((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
-		datoteka.read((char*)&items, sizeof(items));
+		//datoteka.read((char*)&oceanmask1, sizeof(oceanmask1));	
+		//datoteka.read((char*)&oceanmask2, sizeof(oceanmask2));
+		datoteka.read((char*)&items, sizeof(game));
 		datoteka.close();
 
 		game_board(player_ocean);
 		game_board(ocean_PLAYER_2);
+		for(int i=0;i<11;i++)
+		{
+			for(int j=0;j<11;j++)
+			{
+				if (player_ocean[i][j] == 'X' || player_ocean[i][j] == 'O')
+					oceanmask1[i][j] = player_ocean[i][j];
+				else
+					oceanmask1[i][j] = '~';
+			}
+		}
+		for(int i=0;i<11;i++)
+		{
+			for(int j=0;j<11;j++)
+			{
+				if (ocean_PLAYER_2[i][j] == 'X' || ocean_PLAYER_2[i][j] == 'O')
+					oceanmask2[i][j] = ocean_PLAYER_2[i][j];
+				else
+					oceanmask2[i][j] = '~';
+			}
+		}
+			goto opet4;
+		
+		//game_board(oceanmask1);
+		//game_board(oceanmask2);
+		//goto opet3;
+		
+	}
+	for (int i = 0; i < 11; i++)
+	{
+		player_ocean[i][0] = i + 1;
+		oceanmask1[i][0] = i + 1;
+		oceanmask2[i][0] = i + 1;
+		for (int j = 0; j < 11; j++)
+		{
+			znak++;
+			if (i == 0 && !load_GAME)
+			{
+				player_ocean[i][j] = znak - 2;
+				oceanmask1[i][j] = znak - 2;
+				oceanmask2[i][j] = znak - 2;
+			}
+
+			else if(!load_GAME)
+			{
+				//player_ocean[i][j] = '~';
+				
+				oceanmask1[i][j] = '~';
+				oceanmask2[i][j] = '~';
+			}
+			//else
+			//{
+			//	if(player_ocean[i][j] == 'X' || player_ocean[i][j] == 'O')	
+			//		oceanmask1[i][j] = player_ocean[i][j];
+			//	if(ocean_PLAYER_2[i][j] == 'X' || ocean_PLAYER_2[i][j] == 'O')
+			//		oceanmask2[i][j] = ocean_PLAYER_2[i][j];
+			//	oceanmask1[i][j] = '~';
+			//	oceanmask2[i][j] = '~';
+			//}
+		}
+	}
+	if(load_GAME)
+	{
+		opet4:	
+		system("pause");
+		game_board(oceanmask1);
+		game_board(oceanmask2);
 		goto opet3;
 	}
 
+	//for (int i = 0; i < 11; i++)
+		//for (int j = 0; j < 11; j++)
+			//ocean_PLAYER_2[i][j] = player_ocean[i][j];
+	
+	
+	//game items;
+	//fstream datoteka, file;
+	//bool load_GAME = false;
+	//cout << "0.New game\n1.Load game" << endl;
+	//cin >> load_GAME;
+	//if (load_GAME)
+	//{
+	//	datoteka.open("battleships.bin", ios::binary | ios::in);
+	//	if (datoteka.fail())
+	//	{
+	//		cout << "Greska kod ucitavanja datoteke!" << endl;
+	//		exit(0);
+	//	}
+
+	//	datoteka.read((char*)&player_ocean, sizeof(player_ocean));
+	//	datoteka.read((char*)&ocean_PLAYER_2, sizeof(ocean_PLAYER_2));
+	//	datoteka.read((char*)&oceanmask1, sizeof(oceanmask1));	
+	//	datoteka.read((char*)&oceanmask2, sizeof(oceanmask2));
+	//	datoteka.read((char*)&items, sizeof(items));
+	//	datoteka.close();
+
+	//	game_board(player_ocean);
+	//	game_board(ocean_PLAYER_2);
+	//	goto opet3;
+	//}
 	cout << "Enter player's 1 name: ";
 	cin.ignore();
 	getline(cin, items.player1);
@@ -126,6 +194,7 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 				oceanmask2[x][y] = 'O';
 
 			}
+			
 			system("CLS");
 			// Ispisuje polje igraća 2 (PLAYER 1)
 			cout << endl;
@@ -134,7 +203,7 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 			game_board(oceanmask1);
 			//Ispisuje polje igrača 1 (PLAYER 2)
 			cout << endl;
-			cout << "\t\t\t\t\t" << items.player2 << "'s game board\n" << endl;
+			cout << "\t\t\t\t\t" << items.player2 << "'s game board" << endl;
 			game_board(oceanmask2);
 		}
 		if (items.hits_by_player1 == 17)
@@ -143,6 +212,9 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 			exit(0);
 
 		}
+		//cout << "\t\t\tHits by " << items.player1 << ": " << items.hits_by_player1;
+		//cout << "\t\t\tHits by " << items.player2 << ": " << items.hits_by_player2 << endl;
+		
 		// PLAYER 2 turn
 		if (items.turns % 2 == 1)
 		{
@@ -178,7 +250,7 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 			game_board(oceanmask2);
 			//Ispisuje polje igrača (PLAYER 1)  
 			cout << endl;
-			cout << "\t\t\t\t\t" << items.player1 << "'s game board\n" << endl;
+			cout << "\t\t\t\t\t" << items.player1 << "'s game board" << endl;
 			game_board(oceanmask1);
 
 		}
@@ -194,9 +266,13 @@ void player_v_player(char &y, int &x, char(&player_ocean)[11][11], char(&ocean_P
 		cin >> da_ne;
 		if (da_ne == "yes")
 		{
+			datoteka.open("battleships.bin", ios::trunc);
 			datoteka.open("battleships.bin", ios::binary | ios::out);
-			datoteka.write((char*)&oceanmask1, sizeof(oceanmask1));
-			datoteka.write((char*)&oceanmask2, sizeof(oceanmask2));
+			
+			//datoteka.write((char*)&oceanmask1, sizeof(oceanmask1));
+			//datoteka.write((char*)&oceanmask2, sizeof(oceanmask2));
+			datoteka.write((char*)&player_ocean, sizeof(oceanmask1));
+			datoteka.write((char*)&ocean_PLAYER_2, sizeof(oceanmask2));
 			datoteka.write((char*)&items, sizeof(items));
 			datoteka.close();
 
