@@ -5,21 +5,16 @@ using namespace std;
 
 void game_board(char player_ocean[][11])
 {
-	cout << "\t\t" << "--------------------------------------------------------------------------" << endl;
+	cout << "\t\t" << "---------------------------------------------------------------------------------" << endl << endl;
 	for (int i = 0; i < 11; i++)
 	{
-		cout << "\t\t";
-		if (i != 10)
-			cout << " " << i << " ";
-		else
-			cout << i << " ";
+		cout << "    \t\t";
+		cout << i << " ";
 		for (int j = 1; j < 11; j++)
-		{
-			cout << player_ocean[i][j] << '\t';
-		}
-		cout << endl << endl;
+			cout << "\t" << player_ocean[i][j] ;
+		cout << "\n\n";
 	}
-	cout << "\t\t" << "--------------------------------------------------------------------------" << endl;
+	cout << "\t\t" << "----------------------------------------------------------------------------------" << endl << endl;
 }
 
 void unos(int& x, int& inty, char y, bool zastavica)
