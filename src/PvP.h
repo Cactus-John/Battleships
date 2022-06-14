@@ -66,6 +66,7 @@ void player_v_player(char& y, int& x, char(&player_ocean)[11][11], char(&ocean_P
 					oceanmask2[i][j] = '~';
 			}
 		}
+		
 		goto opet4;
 	}
 	for (int i = 0; i < 11; i++)
@@ -91,12 +92,26 @@ void player_v_player(char& y, int& x, char(&player_ocean)[11][11], char(&ocean_P
 			}
 		}
 	}
+	
 	if (load_GAME)
 	{
 		opet4:
-		game_board(oceanmask2);
-		game_board(oceanmask1);
+		if (items.turns % 2 == 0)
+		{
+			cout << "\t\t\t\t\t" << items.player2 << "'s game board" << endl;
+			game_board(oceanmask2);
 		
+			cout << "\t\t\t\t\t" << items.player1 << "'s game board" << endl;
+			game_board(oceanmask1);
+		}	
+		if (items.turns % 2 == 1)
+		{
+			cout << "\t\t\t\t\t" << items.player1 << "'s game board" << endl;
+			game_board(oceanmask1);
+
+			cout << "\t\t\t\t\t" << items.player2 << "'s game board" << endl;
+			game_board(oceanmask2);
+		}	
 		goto opet3;
 	}
 
@@ -150,7 +165,6 @@ void player_v_player(char& y, int& x, char(&player_ocean)[11][11], char(&ocean_P
 			{
 				ocean_PLAYER_2[x][y] = 'O';
 				oceanmask2[x][y] = 'O';
-
 			}
 
 			system("CLS");
@@ -204,11 +218,12 @@ void player_v_player(char& y, int& x, char(&player_ocean)[11][11], char(&ocean_P
 			cout << "\t\t\t\t\t" << items.player2 << "'s game board";
 			cout << endl;
 			game_board(oceanmask2);
+			
 			//Ispisuje polje igrača (PLAYER 1)  
 			cout << endl;
 			cout << "\t\t\t\t\t" << items.player1 << "'s game board" << endl;
 			game_board(oceanmask1);
-
+			
 		}
 		if (items.hits_by_player2 == 17)
 		{
