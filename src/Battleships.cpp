@@ -253,10 +253,7 @@ int main()
 	}
 
 	// selecting AI or PLAYER 
-	odabir:
-	cout << "Do you want to play against AI or Player" << endl;
-	string odabir;
-	cin >> odabir;
+	string odabir = "Player";
 	if (odabir == "AI")
 	{
 		bool load_GAME = false;
@@ -302,7 +299,6 @@ int main()
 		cout << "Select difficulty:\n\t\t\t1.NOOB\n\t\t\t2.IMPOSSIBLE\n";
 		cin >> diff;
 		system("CLS");
-
 		// noob bot
 		if (diff == 1)
 			game_diff_1(y, x, player_ocean, ocean_PLAYER_2, ocean);
@@ -312,18 +308,12 @@ int main()
 		// pro bot
 		if (diff == 2)
 			game_diff_2(y, x, player_ocean, ocean_PLAYER_2, ocean);
-
 	}
 	
-	if (odabir == "Player" || odabir == "player")
+	if (odabir == "Player")
 	{
 		player_v_player(y, x, player_ocean, ocean_PLAYER_1);
 	}
-	else
-	{
-		cout << "Krivi unos! Molim vas upisite: Player ili player" << endl;
-		goto odabir;
-	}
-		
+
 	return 0;
 }
